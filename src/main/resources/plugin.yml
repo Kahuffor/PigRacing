@@ -1,0 +1,7 @@
+name: KartPigs
+version: '${project.version}'
+main: com.stiggles.kartpigs.KartPigs
+api-version: '1.20'
+commands:
+  Join:
+    description: Join the queue for Pig Kart!
