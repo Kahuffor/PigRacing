@@ -1,5 +1,6 @@
 package com.stiggles.kartpigs;
 
+import com.stiggles.kartpigs.Cuboid.Cuboid;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
@@ -16,36 +17,10 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.UUID;
-/*
-PIGKART
 
-Cancel Barrel and ArmorStand events by default
-
-Round = LOBBY
-- Countdown from 2 min begins when 2 players join
-- Countdown cancels if at 1 person
-- Countdown decreases to 10 sec when MAX_PLAYERS join
-- At zero, teleport players to character selection screen and switch round to CHARACTER_SELECT
-
-Round = CHARACTER_SELECT
-- 30 second countdown for players to choose their pig.
-- Players should not be able to move in this phase, or see each other
-- Prepare map
-- When timer reaches zero, teleport players and according pigs to the start of the track.
-- Switch to PRERACE
-
-Round = PRERACE
-- 5 second countdown to begin
-- Do not allow player movement
-- At zero switch to RACE
-
-Round = RACE
-- Ensure players are properly reaching checkpoints, count each lap a player has reached.
--
-Round = END
- */
 public final class KartPigs extends JavaPlugin implements Listener {
 
+    GameManager gameManager = new GameManager();
     ArrayList<String> pigList = new ArrayList<String>();
     //ArrayList<UUID> pickingPig = new ArrayList<UUID>();
     int maxPlayers = 16;
@@ -67,6 +42,7 @@ public final class KartPigs extends JavaPlugin implements Listener {
         Bukkit.getPluginManager().registerEvents(this, this);
         Bukkit.getPluginCommand("join").setExecutor(new JoinCommand(this));
         playersJoined = 0;
+        gameManager.setStartingLine(new Cuboid(Bukkit.getWorld("world"), -425, 96, -10, -415, 102, -14));
     }
 
 

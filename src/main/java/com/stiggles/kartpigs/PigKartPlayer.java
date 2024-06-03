@@ -16,6 +16,10 @@ public class PigKartPlayer {
 
     public int pigIndex = 0;
 
+    int canLapIn = 300;
+    int CAN_LAP_DEFAULT = 300;
+
+    int placement = -1;
 
     public PigKartPlayer (Player p) {
         player = p;
@@ -38,6 +42,26 @@ public class PigKartPlayer {
     }
     public void playSound (Sound sound, float volume, float pitch) {
         player.playSound(player.getLocation(), sound, volume, pitch);
+    }
+    public void playSoundAt (Sound sound, float volume, float pitch, Location location) {
+        player.playSound(location, sound, volume, pitch);
+    }
+    public Location getLocation () {
+        return player.getLocation();
+    }
+    public void everyTick () {
+        if (canLapIn > 0)
+            --canLapIn;
+    }
+    public boolean canLap () {
+        return canLapIn == 0;
+    }
+    public void addLap () {
+        ++currentLap;
+        canLapIn = CAN_LAP_DEFAULT;
+    }
+    public String getName () {
+        return player.getName();
     }
 
 }
