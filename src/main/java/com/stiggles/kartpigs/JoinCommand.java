@@ -11,6 +11,8 @@ import org.bukkit.entity.Player;
 public class JoinCommand implements CommandExecutor {
     private static KartPigs pigKart;
     private static Items items;
+
+    public JoinCommand(Items items) { JoinCommand.items = items; }
     public JoinCommand(KartPigs pigKart) { JoinCommand.pigKart = pigKart; }
 
     @Override
