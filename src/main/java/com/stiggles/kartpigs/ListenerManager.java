@@ -20,7 +20,7 @@ public class ListenerManager implements Listener {
 
     public ListenerManager(KartPigs pigKart) { ListenerManager.pigKart = pigKart; }
 
-
+    int pigIndex;
 
 
     @EventHandler
@@ -41,7 +41,6 @@ public class ListenerManager implements Listener {
 
 
         if (gm.containsPlayer(p)) { // Checking to see if the player is in the game
-
             PigKartPlayer pkPlayer = gm.getPlayerFromPigKart(p); //Make the pig player object
             pigIndex = pkPlayer.pigIndex; // Set the event var equal to the players index amount
             if (invItemStack.equals(items.backNextStar())) {
