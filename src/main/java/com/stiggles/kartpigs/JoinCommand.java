@@ -5,10 +5,12 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.ArmorStand;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 
 public class JoinCommand implements CommandExecutor {
     private static KartPigs pigKart;
+    private static Items items;
     public JoinCommand(KartPigs pigKart) { JoinCommand.pigKart = pigKart; }
 
     @Override
@@ -25,9 +27,10 @@ public class JoinCommand implements CommandExecutor {
                 PigKartPlayer p = KartPigs.getPigKartPlayer(player.getUniqueId());
                 p.pigSelection = "0";
                 player.getInventory().clear();
+                player.getInventory().addItem(items.backNextStar());
                 findSpot(player);
                 player.playSound(player, Sound.ENTITY_ENDERMAN_TELEPORT, SoundCategory.MASTER, 1, 1);
-                pigPickingSequence(player);
+                //pigPickingSequence(player);
             }
         }
         return false;
@@ -36,59 +39,59 @@ public class JoinCommand implements CommandExecutor {
     private void findSpot(Player player) {
         switch (pigKart.playersJoined) {
             case 0:
-                player.teleport(new Location(player.getWorld(), -253.5, 115, -16.5));
+                player.teleport(new Location(player.getWorld(), -252.5, 115, -15.5, 180, -4));
                 break;
             case 1:
-                player.teleport(new Location(player.getWorld(), -248.5, 115, -16.5));
+                player.teleport(new Location(player.getWorld(), -247.5, 115, -15.5, 180, -4));
                 break;
             case 2:
-                player.teleport(new Location(player.getWorld(), -243.5, 115, -16.5));
+                player.teleport(new Location(player.getWorld(), -242.5, 115, -15.5, 180, -4));
                 break;
             case 3:
-                player.teleport(new Location(player.getWorld(), -238.5, 115, -16.5));
+                player.teleport(new Location(player.getWorld(), -237.5, 115, -15.5, 180, -4));
                 break;
             case 4:
-                player.teleport(new Location(player.getWorld(), -233.5, 115, -16));
+                player.teleport(new Location(player.getWorld(), -232.5, 115, -15.5, 180, -4));
                 break;
             case 5:
-                player.teleport(new Location(player.getWorld(), -228.5, 115, -16.5));
+                player.teleport(new Location(player.getWorld(), -227.5, 115, -15.5, 180, -4));
                 break;
             case 6:
-                player.teleport(new Location(player.getWorld(), -223.5, 115, -16.5));
+                player.teleport(new Location(player.getWorld(), -222.5, 115, -15.5, 180, -4));
                 break;
             case 7:
-                player.teleport(new Location(player.getWorld(), -218.5, 115, -16.5));
+                player.teleport(new Location(player.getWorld(), -217.5, 115, -15.5, 180, -4));
                 break;
             case 8:
-                player.teleport(new Location(player.getWorld(), -253.5, 120, -16.5));
+                player.teleport(new Location(player.getWorld(), -252.5, 120, -15.5, 180, -4));
                 break;
             case 9:
-                player.teleport(new Location(player.getWorld(), -248.5, 120, -16.5));
+                player.teleport(new Location(player.getWorld(), -247.5, 120, -15.5, 180, -4));
                 break;
             case 10:
-                player.teleport(new Location(player.getWorld(), -243.5, 120, -16.5));
+                player.teleport(new Location(player.getWorld(), -242.5, 120, -15.5, 180, -4));
                 break;
             case 11:
-                player.teleport(new Location(player.getWorld(), -238.5, 120, -16.5));
+                player.teleport(new Location(player.getWorld(), -237.5, 120, -15.5, 180, -4));
                 break;
             case 12:
-                player.teleport(new Location(player.getWorld(), -233.5, 120, -16.5));
+                player.teleport(new Location(player.getWorld(), -232.5, 120, -15.5, 180, -4));
                 break;
             case 13:
-                player.teleport(new Location(player.getWorld(), -228.5, 120, -16));
+                player.teleport(new Location(player.getWorld(), -227.5, 120, -15.5, 180, -4));
                 break;
             case 14:
-                player.teleport(new Location(player.getWorld(), -223.5, 120, -16.5));
+                player.teleport(new Location(player.getWorld(), -222.5, 120, -15.5, 180, -4));
                 break;
             case 15:
-                player.teleport(new Location(player.getWorld(), -218.5, 120, -16.5));
+                player.teleport(new Location(player.getWorld(), -217.5, 120, -15.5, 180, -4));
                 break;
         }
     }
 
     private void pigPickingSequence(Player p){
-        Location nextStandLoc = p.getLocation().add(.5, 0, -.5);
-        Location backStandLoc = p.getLocation().add(-.5, 0, -.5);
+        Location nextStandLoc = p.getLocation().add(1, 0, -1);
+        Location backStandLoc = p.getLocation().add(-1, 0, -1);
         spawnNext(nextStandLoc);
         spawnBack(backStandLoc);
     }
