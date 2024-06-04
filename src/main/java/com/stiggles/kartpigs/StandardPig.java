@@ -1,8 +1,10 @@
 package com.stiggles.kartpigs;
 
+import org.bukkit.entity.Player;
+
 public class StandardPig extends Kart {
-    public StandardPig () {
-        super ();
+    public StandardPig (Player owner) {
+        super (owner);
         setSpeed(25);
 
     }

@@ -10,7 +10,7 @@ import java.util.UUID;
 public class PigKartPlayer {
 
     private Player player;
-
+    private Kart kart;
     boolean pickingKart = false;
     int currentLap = 0;
     String pigSelection;
@@ -26,6 +26,7 @@ public class PigKartPlayer {
     boolean backwards = false;
     boolean lapCounted = false;
 
+    boolean finished = false;
 
     public PigKartPlayer (Player p) {
         player = p;
@@ -58,6 +59,7 @@ public class PigKartPlayer {
     public void everyTick () {
         if (canLapIn > 0)
             --canLapIn;
+        kart.everyTick();
     }
     public boolean canLap () {
         return canLapIn == 0;
@@ -88,7 +90,7 @@ public class PigKartPlayer {
         lapCounted = newVal;
     }
     public boolean isFinished () {
-        return currentLap == 3;
+        return finished;
     }
 
     public void onComplete () {
@@ -97,7 +99,11 @@ public class PigKartPlayer {
         player.setInvulnerable(true);
         player.setAllowFlight(true);
         player.setCollidable(false);
-
+        finished = true;
+        if (kart != null) {
+            kart.getPig().remove();
+            kart = null;
+        }
     }
     public void resetPlayer () {
         player.setGameMode(GameMode.ADVENTURE);
@@ -105,6 +111,14 @@ public class PigKartPlayer {
         player.setInvulnerable(true);
         player.setAllowFlight(false);
         player.setCollidable(true);
+    }
+
+    public void spawnKart () {
+        kart = new Kart(player);
+        kart.setSpeed(0);
+    }
+    public Kart getKart () {
+        return kart;
     }
 
 

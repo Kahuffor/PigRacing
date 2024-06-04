@@ -18,10 +18,10 @@ import java.util.UUID;
 
 public final class KartPigs extends JavaPlugin implements Listener {
 
-    private static Items items;
+    private static Items items = new Items();
 
 
-    static GameManager gameManager = new GameManager();
+    static GameManager gameManager;
     ArrayList<String> pigList = new ArrayList<String>();
     //ArrayList<UUID> pickingPig = new ArrayList<UUID>();
     int maxPlayers = 16;
@@ -46,14 +46,20 @@ public final class KartPigs extends JavaPlugin implements Listener {
     @Override
     public void onEnable() {
         instance = this;
+        gameManager = new GameManager();
         prepPigList();
         Bukkit.getPluginManager().registerEvents(this, this);
         Bukkit.getPluginManager().registerEvents(new ListenerManager(this), this);
+        Bukkit.getPluginManager().registerEvents(new LogEventListener(), this);
+        Bukkit.getPluginManager().registerEvents(new HitListener(), this);
         Bukkit.getPluginCommand("join").setExecutor(new JoinCommand(this));
+        Bukkit.getPluginCommand("override").setExecutor(new CountdownOverride(gameManager));
+
         playersJoined = 0;
+
         gameManager.setStartingLine(new Cuboid(Bukkit.getWorld("world"), -425, 96, -10, -415, 102, -13));
-        gameManager.setStartingLine(new Cuboid(Bukkit.getWorld("world"), -425, 96, -14, -415, 102, -16));
-        gameManager.setStartingLine(new Cuboid(Bukkit.getWorld("world"), -425, 96, -10, -415, 102, -14));
+        gameManager.setReverseCheck(new Cuboid(Bukkit.getWorld("world"), -425, 96, -14, -415, 102, -16));
+
 
         System.out.println("THE MAX AMOUNT OF PIGS THERE ARE IN THE ARRAY ARE " + maxPigs);
     }
@@ -66,10 +72,10 @@ public final class KartPigs extends JavaPlugin implements Listener {
     //Adding the pigs to the list
 
     public void prepPigList(){
-        pigList.add("1 Pig");
-        pigList.add("2 Pig");
-        pigList.add("3 Pig");
-        pigList.add("4 Pig");
+        pigList.add("Beer Boar");
+        pigList.add("Spike Pig");
+        pigList.add("King-Pig");
+        pigList.add("El Chorizo");
 
         maxPigs = pigList.size();
     }

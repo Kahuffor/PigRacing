@@ -40,7 +40,10 @@ public class ListenerManager implements Listener {
         int pigIndex;
         Player p = e.getPlayer();
         ItemStack invItemStack = p.getInventory().getItemInMainHand();
-        PigKartPlayer pkPlayer = pigKart.getPigKartPlayer(p.getUniqueId());
+
+        GameManager gm = KartPigs.getGameManager();
+
+
 
         if (pkPlayer != null) {
             pigIndex = pkPlayer.pigIndex; // Set the event var equal to the players index amount

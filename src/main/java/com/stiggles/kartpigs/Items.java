@@ -27,4 +27,11 @@ public class Items {
         return item;
     }
 
+    public ItemStack carrotOnAStick () {
+        ItemStack is = new ItemStack(Material.CARROT_ON_A_STICK);
+        ItemMeta im = is.getItemMeta();
+        im.setUnbreakable(true);
+        is.setItemMeta(im);
+        return is;
+    }
 }
