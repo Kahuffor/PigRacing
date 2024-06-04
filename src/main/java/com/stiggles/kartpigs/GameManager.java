@@ -130,6 +130,8 @@ public class GameManager {
                         if (p.placement == -1) {
                             winners.add(p);
                             p.placement = winners.size();
+                            p.playSound (Sound.ENTITY_FIREWORK_ROCKET_TWINKLE, 1.f, 1.f);
+                            p.playSound (Sound.ENTITY_PLAYER_LEVELUP, 1.f, 1.8f);
                             p.onComplete();
                             sendMessageToAll(ChatColor.GOLD + "#" + winners.size() + " - " + p.getName());
                             if (!beginEndCountdown && winners.size() >= inGamePlayers.size() * 0.35) {
@@ -151,11 +153,11 @@ public class GameManager {
                 }
             }
 
-           // if (reverseCheck.contains (p.getLocation()) && !p.hasEntered())
+            // if (reverseCheck.contains (p.getLocation()) && !p.hasEntered())
             //    p.setBackwards(true);
 
 
-           // if (p.isBackwards()) {
+            // if (p.isBackwards()) {
                 /*if (p.hasEntered() && !startingLine.contains(p.getLocation())) {
                     p.setEntered(false);
                     p.setBackwards(false);
@@ -176,7 +178,7 @@ public class GameManager {
             runLobbyPhase();
         }
         if (currentState == GameStates.PIG_SELECT) {
-           runPigSelectPhase();
+            runPigSelectPhase();
         }
         if (currentState == GameStates.PRERACE) {
             runPreRacePhase();
