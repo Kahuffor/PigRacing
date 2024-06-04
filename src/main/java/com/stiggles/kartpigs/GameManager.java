@@ -45,6 +45,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.entity.Pig;
+import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 
@@ -62,35 +63,79 @@ public class GameManager {
 
     boolean cancelled = false;
     Cuboid startingLine;
+    Cuboid reverseCheck;
 
     int placement = 1;
+
+    ArrayList<PigKartPlayer> winners = new ArrayList<>();
+    int ticksPassed = 0;
+
+    boolean active = true;
 
     boolean bypassStartRestrictions = false;
 
     public void setStartingLine (Cuboid cuboid) {
         startingLine = cuboid;
     }
+    public void setReverseCheck (Cuboid cuboid) {
+        reverseCheck = cuboid;
+    }
     public void construct () {
         initializeLobbyPhase();
         if (startingLine == null)
             startingLine = new Cuboid(new Location(Bukkit.getWorld("world"), -5, 0, -1), new Location(Bukkit.getWorld("world"), 5, 5, 1));
+        if (reverseCheck == null)
+            reverseCheck = new Cuboid (new Location(Bukkit.getWorld("world"), -5, 0, -1), new Location(Bukkit.getWorld("world"), 5, 5, 1));
+
     }
     public void destruct () {
 
     }
     public void everyTick () {
+        if (active)
+            ++ticksPassed;
+        if (ticksPassed % 20 == 0)
+            everySecond();
         for (PigKartPlayer p : inGamePlayers) {
-            p.everyTick();
+
             if (startingLine.contains(p.getLocation ())) {
-                if (p.canLap()) {
-                    p.addLap();
-                    sendMessageToAll(ChatColor.GOLD + p.getName() + " has completed lap " + p.currentLap);
-                    if (p.currentLap == 3) {
-                        p.placement = placement;
-                        ++placement;
+                p.setEntered(true);
+                if (!p.hasLapCounted()) {
+                    if (!p.isBackwards()) {
+                        p.addLap();
+
+                        if (p.currentLap == 3) {
+                            if (p.placement == -1) {
+                                winners.add(p);
+                                p.placement = winners.size();
+
+                                sendMessageToAll(ChatColor.GOLD + "#" + winners.size() + " - " + winners.get(0).getName());
+                                if (winners.size() >= inGamePlayers.size() * 0.35) {
+                                    sendMessageToAll(ChatColor.RED + ChatColor.BOLD.toString() + "You have 15 seconds left to complete the race");
+
+                                }
+                            }
+                        }
+                        else {
+                            sendMessageToAll(ChatColor.GOLD + p.getName() + " has completed lap " + p.currentLap);
+                        }
                     }
                 }
             }
+
+            if (reverseCheck.contains (p.getLocation()) && !p.hasEntered())
+                p.setBackwards(true);
+
+            if (!p.isBackwards()) {
+                if (p.hasEntered() && !reverseCheck.contains(p.getLocation())) {
+                    p.setEntered(false);
+                    p.setBackwards(false);
+                    p.setLapCounted (false);
+                }
+            }
+            p.everyTick();
+
+
         }
     }
     public void everySecond () {
@@ -169,6 +214,7 @@ public class GameManager {
                 p.sendMessage(ChatColor.GREEN + ChatColor.BOLD.toString() + "GO!!!");
                 p.playSound(Sound.BLOCK_NOTE_BLOCK_CHIME, 1, 2);
                 p.playSound(Sound.BLOCK_NOTE_BLOCK_BANJO, 1, 2);
+                ticksPassed = 0;
                 // What if we play a piggy sound here
             }
             initializeRacePhase();
@@ -187,10 +233,13 @@ public class GameManager {
         currentState = GameStates.RACE;
     }
     public void runRacePhase () {
-
+        if (countdown == 0) {
+            initializeEndPhase();
+        }
     }
     public void initializeEndPhase () {
         currentState = GameStates.END;
+        // mAKE ALL PLAYERS INVIS AND STUFF HERE
     }
     public void runEndPhase () {
 
@@ -217,5 +266,20 @@ public class GameManager {
     public void sendMessageToAll (String message) {
         for (PigKartPlayer p : inGamePlayers)
             p.sendMessage(message);
+    }
+
+    public ArrayList<PigKartPlayer> getInGamePlayers() {
+        return inGamePlayers;
+    }
+
+    public boolean containsPlayer (Player player) {
+        for (PigKartPlayer p : inGamePlayers) {
+            if (p.getUUID() == player.getUniqueId())
+                return true;
+        }
+        return false;
+    }
+    public void beginCountdown () {
+        countdown = 15;
     }
 }

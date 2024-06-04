@@ -20,7 +20,8 @@ public final class KartPigs extends JavaPlugin implements Listener {
 
     private static Items items;
 
-    GameManager gameManager = new GameManager();
+
+    static GameManager gameManager = new GameManager();
     ArrayList<String> pigList = new ArrayList<String>();
     //ArrayList<UUID> pickingPig = new ArrayList<UUID>();
     int maxPlayers = 16;
@@ -28,6 +29,9 @@ public final class KartPigs extends JavaPlugin implements Listener {
     int maxPigs;
 
     // HashMap<UUID, Integer> playerLapMap = new HashMap<UUID, Integer>();
+
+    static KartPigs instance;
+   // HashMap<UUID, Integer> playerLapMap = new HashMap<UUID, Integer>();
     //HashMap<UUID, String> playerPigSelection = new HashMap<UUID, String>();
     // ONLY IF NEEDED --> HashMap<UUID, Integer> playerPlaceMap = new HashMap<UUID, Integer>();
 
@@ -41,11 +45,14 @@ public final class KartPigs extends JavaPlugin implements Listener {
 
     @Override
     public void onEnable() {
+        instance = this;
         prepPigList();
         Bukkit.getPluginManager().registerEvents(this, this);
         Bukkit.getPluginManager().registerEvents(new ListenerManager(this), this);
         Bukkit.getPluginCommand("join").setExecutor(new JoinCommand(this));
         playersJoined = 0;
+        gameManager.setStartingLine(new Cuboid(Bukkit.getWorld("world"), -425, 96, -10, -415, 102, -13));
+        gameManager.setStartingLine(new Cuboid(Bukkit.getWorld("world"), -425, 96, -14, -415, 102, -16));
         gameManager.setStartingLine(new Cuboid(Bukkit.getWorld("world"), -425, 96, -10, -415, 102, -14));
 
         System.out.println("THE MAX AMOUNT OF PIGS THERE ARE IN THE ARRAY ARE " + maxPigs);
@@ -121,9 +128,15 @@ public final class KartPigs extends JavaPlugin implements Listener {
     }
 
 
+
     public void spawnShowPig(String pigString, Location loc){
     Use pigString and catch method to show the right pig.
     }
      */
-
+    public static GameManager getGameManager () {
+        return gameManager;
+    }
+    public static KartPigs getPlugin () {
+        return instance;
+    }
 }

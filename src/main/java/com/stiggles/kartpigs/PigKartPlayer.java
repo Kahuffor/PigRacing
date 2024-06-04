@@ -1,5 +1,6 @@
 package com.stiggles.kartpigs;
 
+import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
@@ -16,10 +17,15 @@ public class PigKartPlayer {
 
     public int pigIndex = 0;
 
-    int canLapIn = 300;
-    int CAN_LAP_DEFAULT = 300;
+    int canLapIn = 50;
+    int CAN_LAP_DEFAULT = 50;
 
     int placement = -1;
+
+    boolean entered = false;
+    boolean backwards = false;
+    boolean lapCounted = false;
+
 
     public PigKartPlayer (Player p) {
         player = p;
@@ -63,5 +69,43 @@ public class PigKartPlayer {
     public String getName () {
         return player.getName();
     }
+    public boolean hasEntered () {
+        return entered;
+    }
+    public boolean isBackwards () {
+        return backwards;
+    }
+    public void setEntered (boolean newVal) {
+        entered = newVal;
+    }
+    public void setBackwards (boolean newVal) {
+        backwards = newVal;
+    }
+    public boolean hasLapCounted () {
+        return lapCounted;
+    }
+    public void setLapCounted (boolean newVal) {
+        lapCounted = newVal;
+    }
+    public boolean isFinished () {
+        return currentLap == 3;
+    }
+
+    public void onComplete () {
+        player.setGameMode(GameMode.ADVENTURE);
+        player.setInvisible(true);
+        player.setInvulnerable(true);
+        player.setAllowFlight(true);
+        player.setCollidable(false);
+
+    }
+    public void resetPlayer () {
+        player.setGameMode(GameMode.ADVENTURE);
+        player.setInvisible(false);
+        player.setInvulnerable(true);
+        player.setAllowFlight(false);
+        player.setCollidable(true);
+    }
+
 
 }
