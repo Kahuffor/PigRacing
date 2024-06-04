@@ -234,6 +234,16 @@ public class GameManager {
         }
     }
     public void initializePreRacePhase () {
+
+        Bukkit.getWorld("world").getBlockAt(countdownBlock3a).setType(Material.WHITE_CONCRETE);
+        Bukkit.getWorld("world").getBlockAt(countdownBlock3b).setType(Material.WHITE_CONCRETE);
+        Bukkit.getWorld("world").getBlockAt(countdownBlock2a).setType(Material.WHITE_CONCRETE);
+        Bukkit.getWorld("world").getBlockAt(countdownBlock2b).setType(Material.WHITE_CONCRETE);
+        Bukkit.getWorld("world").getBlockAt(countdownBlock1a).setType(Material.WHITE_CONCRETE);
+        Bukkit.getWorld("world").getBlockAt(countdownBlock1b).setType(Material.WHITE_CONCRETE);
+        Bukkit.getWorld("world").getBlockAt(countdownBlock0a).setType(Material.WHITE_CONCRETE);
+        Bukkit.getWorld("world").getBlockAt(countdownBlock0b).setType(Material.WHITE_CONCRETE);
+
         currentState = GameStates.PRERACE;
         countdown = 10;
         sendMessageToAll(ChatColor.GREEN + "Get ready to race!");

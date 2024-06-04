@@ -13,14 +13,10 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.UUID;
-
 public class ListenerManager implements Listener {
 
     private static KartPigs pigKart;
-    private static Items items;
+    private static Items items = new Items();
 
     public ListenerManager(KartPigs pigKart) { ListenerManager.pigKart = pigKart; }
 
@@ -37,7 +33,6 @@ public class ListenerManager implements Listener {
 
     @EventHandler
     public void onBlockInteract(PlayerInteractEvent e) {
-        int pigIndex;
         Player p = e.getPlayer();
         ItemStack invItemStack = p.getInventory().getItemInMainHand();
 
@@ -45,7 +40,9 @@ public class ListenerManager implements Listener {
 
 
 
-        if (pkPlayer != null) {
+        if (gm.containsPlayer(p)) { // Checking to see if the player is in the game
+
+            PigKartPlayer pkPlayer = gm.getPlayerFromPigKart(p); //Make the pig player object
             pigIndex = pkPlayer.pigIndex; // Set the event var equal to the players index amount
             if (invItemStack.equals(items.backNextStar())) {
 
@@ -54,28 +51,36 @@ public class ListenerManager implements Listener {
                         // Right Click is the Next Option
                         if (pigIndex == (pigKart.maxPigs - 1)) { // Check if the index equals the max amount of pigs
                             // If so, then start at 0 to avoid errors.
-                            pigIndex = 1;
+                            pigIndex = 0;
                             p.sendMessage("You are currently viewing the " + pigKart.pigList.get(pigIndex));
+
+                            p.sendMessage( "Pig Index" + pigIndex);
 
                         } else {
                             // Else, then continue.
                             pigIndex += 1;
                             p.sendMessage("You are currently viewing the " + pigKart.pigList.get(pigIndex));
+
+                            p.sendMessage( "Pig Index" + pigIndex);
                         }
                     }
 
                 } else if (e.getAction().equals(Action.LEFT_CLICK_AIR) || e.getAction().equals(Action.LEFT_CLICK_BLOCK)) {
                     if (e.getHand().equals(EquipmentSlot.HAND)) {
                         // Left Click is the Back Option
-                        if (pigIndex == 1) { // Check if the index equals the lowest array value of which a pig is held at.
+                        if (pigIndex == 0) { // Check if the index equals the lowest array value of which a pig is held at.
                             // If so, then start at 0 to avoid errors.
                             pigIndex = pigKart.maxPigs - 1;
                             p.sendMessage("You are currently viewing the " + pigKart.pigList.get(pigIndex));
+
+                            p.sendMessage( "Pig Index" + pigIndex);
 
                         } else {
                             // Else, then continue.
                             pigIndex -= 1;
                             p.sendMessage("You are currently viewing the " + pigKart.pigList.get(pigIndex));
+
+                            p.sendMessage( "Pig Index" + pigIndex);
                         }
                     }
                 }
