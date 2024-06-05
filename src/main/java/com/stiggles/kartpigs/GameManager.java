@@ -125,13 +125,13 @@ public class GameManager {
                     p.setEntered(true);
                     //if (!p.isBackwards()) {
                     p.addLap();
+                    p.playSound (Sound.ENTITY_FIREWORK_ROCKET_TWINKLE, 1.f, 1.f);
 
                     if (p.currentLap == 3) {
                         if (p.placement == -1) {
                             winners.add(p);
                             p.placement = winners.size();
-                            p.playSound (Sound.ENTITY_FIREWORK_ROCKET_TWINKLE, 1.f, 1.f);
-                            p.playSound (Sound.ENTITY_PLAYER_LEVELUP, 1.f, 1.8f);
+                            p.playSound (Sound.UI_TOAST_CHALLENGE_COMPLETE, 1.f, 1.f);
                             p.onComplete();
                             sendMessageToAll(ChatColor.GOLD + "#" + winners.size() + " - " + p.getName());
                             if (!beginEndCountdown && winners.size() >= inGamePlayers.size() * 0.35) {

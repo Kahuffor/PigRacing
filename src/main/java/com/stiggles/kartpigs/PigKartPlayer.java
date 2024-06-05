@@ -59,7 +59,8 @@ public class PigKartPlayer {
     public void everyTick () {
         if (canLapIn > 0)
             --canLapIn;
-        kart.everyTick();
+        if (kart != null)
+            kart.everyTick();
     }
     public boolean canLap () {
         return canLapIn == 0;

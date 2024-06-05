@@ -1,5 +1,6 @@
 package com.stiggles.kartpigs;
 
+import com.stiggles.kartpigs.abilities.Ability;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -49,6 +50,9 @@ public class Kart {
     public Pig getPig () {
         return pig;
     }
+    public Player getOwner () {
+        return owner;
+    }
     public void addNewLocation (Location location) {
         previousLocations.add (location);
         if (previousLocations.size() >= 30) {
@@ -60,7 +64,8 @@ public class Kart {
     }
     public void everyTick () {
         if (pig.getLocation().getY () <= 87) {
-            pig.teleport(getMostDistantLocation());
+            Location loc = getMostDistantLocation();
+            pig.teleport(new Location(loc.getWorld(), loc.getX(), loc.getY() + 5, loc.getZ()));
             pig.addPassenger(owner.getPlayer());
         }
         Location under = new Location(pig.getWorld(), pig.getLocation().getX(), pig.getLocation().getY() - 1, pig.getLocation().getZ());
